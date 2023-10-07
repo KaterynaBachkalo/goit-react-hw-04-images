@@ -8,7 +8,7 @@ import { Loader } from 'components/Loader/Loader';
 
 export const ImageGallery = ({ searchedImageName }) => {
   const [images, setImages] = useState(null);
-  const [totalImages, setTotalImages] = useState(500);
+  const [totalImages] = useState(500);
   const [totalImagesPerPage, setTotalImagesPerPage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
