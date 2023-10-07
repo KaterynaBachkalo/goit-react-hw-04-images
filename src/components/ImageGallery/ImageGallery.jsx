@@ -17,25 +17,26 @@ export const ImageGallery = ({ searchedImageName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalImageURL, setModalImageURL] = useState(null);
   const [tags, setTags] = useState(null);
+  const [prevImageName, setPrevImageName] = useState('');
+
+  function resetState() {
+    setCurrentPage(1);
+    setImages(null);
+    setTotalImagesPerPage(null);
+    setError(null);
+  }
 
   useEffect(() => {
-    // if () {
-    //     setImages(null);
-    //     setCurrentPage(1);
-    //     setTotalImagesPerPage(null);
-    //   }
-
-    if (searchedImageName === '') {
-      return;
+    if (searchedImageName && prevImageName === searchedImageName) {
+      fetchImagesByName(searchedImageName, currentPage);
+    } else {
+      resetState();
     }
 
-    fetchImagesByName(searchedImageName, currentPage);
-
-    async function fetchImagesByName(imageName, page) {
+    async function fetchImagesByName(searchedImageName, currentPage) {
       try {
         setIsLoading(true);
-
-        const response = await findImagesByName(imageName, page);
+        const response = await findImagesByName(searchedImageName, currentPage);
 
         if (response.total !== 0) {
           setImages(prevImages =>
@@ -56,7 +57,8 @@ export const ImageGallery = ({ searchedImageName }) => {
         setIsLoading(false);
       }
     }
-  }, [searchedImageName, currentPage]);
+    setPrevImageName(searchedImageName);
+  }, [searchedImageName, currentPage, prevImageName]);
 
   //---Modal----
 
